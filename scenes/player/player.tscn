@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://dme6wxg32q4h5"]
+[gd_scene load_steps=39 format=3 uid="uid://dme6wxg32q4h5"]
 
 [ext_resource type="Script" path="res://scenes/player/scripts/player.gd" id="1_0fi3h"]
 [ext_resource type="Texture2D" uid="uid://drkxyunmbau3f" path="res://assets/sprites/knight.png" id="1_yir83"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scenes/player/scripts/idle_state.gd" id="5_8y3qk"]
 [ext_resource type="Script" path="res://scenes/player/scripts/moving_state.gd" id="6_k17yl"]
 [ext_resource type="Script" path="res://scenes/player/scripts/air_state.gd" id="7_8xnvb"]
+[ext_resource type="Script" path="res://scenes/player/scripts/rolling_state.gd" id="8_i34f8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d6sum"]
 atlas = ExtResource("1_yir83")
@@ -55,18 +56,6 @@ region = Rect2(160, 160, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_arwfe"]
 atlas = ExtResource("1_yir83")
 region = Rect2(192, 160, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_kuu3y"]
-atlas = ExtResource("1_yir83")
-region = Rect2(224, 160, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_gf87y"]
-atlas = ExtResource("1_yir83")
-region = Rect2(0, 192, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_syfw0"]
-atlas = ExtResource("1_yir83")
-region = Rect2(32, 192, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c0wsm"]
 atlas = ExtResource("1_yir83")
@@ -180,15 +169,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_arwfe")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_kuu3y")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_gf87y")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_syfw0")
 }],
 "loop": false,
 "name": &"roll",
@@ -257,7 +237,9 @@ script = ExtResource("1_0fi3h")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_0ceui")
-animation = &"idle"
+animation = &"roll"
+frame = 5
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 7)
@@ -271,17 +253,21 @@ bus = &"SFX"
 script = ExtResource("4_cs4a2")
 initial_state = NodePath("Idle")
 
-[node name="Idle" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("animated_sprite")]
+[node name="Idle" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("animated_sprite", "jump_sound")]
 script = ExtResource("5_8y3qk")
-animated_sprite = NodePath("../../AnimatedSprite2D")
-
-[node name="Moving" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("animated_sprite")]
-script = ExtResource("6_k17yl")
-animated_sprite = NodePath("../../AnimatedSprite2D")
-
-[node name="Air" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("animated_sprite", "jump_sound")]
-script = ExtResource("7_8xnvb")
 animated_sprite = NodePath("../../AnimatedSprite2D")
 jump_sound = NodePath("../../JumpSound")
 
-[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[node name="Moving" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("animated_sprite", "jump_sound")]
+script = ExtResource("6_k17yl")
+animated_sprite = NodePath("../../AnimatedSprite2D")
+jump_sound = NodePath("../../JumpSound")
+
+[node name="Air" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("7_8xnvb")
+
+[node name="Rolling" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("animated_sprite")]
+script = ExtResource("8_i34f8")
+animated_sprite = NodePath("../../AnimatedSprite2D")
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="PlayerStateMachine/Rolling" method="_on_animated_sprite_2d_animation_finished"]

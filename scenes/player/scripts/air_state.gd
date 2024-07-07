@@ -1,12 +1,7 @@
 extends PlayerBaseState
 
-@export var animated_sprite : AnimatedSprite2D
-@export var jump_sound : AudioStreamPlayer2D
-
 func enter():
 	super()
-	animated_sprite.play('jump')
-	jump_sound.play()	
 
 func physics_process(_delta):
 	var direction = Input.get_axis("move_left", "move_right")

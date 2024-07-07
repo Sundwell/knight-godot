@@ -3,6 +3,8 @@ class_name PlayerBaseState
 
 @export var speed = 130.0
 @export var jump_velocity = -300.0
+@export var roll_velocity = 200.0
+
 var player : Player
 
 func enter():
