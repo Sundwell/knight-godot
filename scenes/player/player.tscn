@@ -253,15 +253,13 @@ bus = &"SFX"
 script = ExtResource("4_cs4a2")
 initial_state = NodePath("Idle")
 
-[node name="Idle" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("animated_sprite", "jump_sound")]
+[node name="Idle" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("animated_sprite")]
 script = ExtResource("5_8y3qk")
 animated_sprite = NodePath("../../AnimatedSprite2D")
-jump_sound = NodePath("../../JumpSound")
 
-[node name="Moving" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("animated_sprite", "jump_sound")]
+[node name="Moving" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("animated_sprite")]
 script = ExtResource("6_k17yl")
 animated_sprite = NodePath("../../AnimatedSprite2D")
-jump_sound = NodePath("../../JumpSound")
 
 [node name="Air" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("7_8xnvb")
