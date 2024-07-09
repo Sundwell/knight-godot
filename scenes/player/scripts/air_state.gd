@@ -4,6 +4,10 @@ func enter():
 	super()
 
 func physics_process(_delta):
+	if Input.is_action_just_pressed('roll'):
+		state_transition.emit(self, 'Rolling')
+		return
+
 	var direction = Input.get_axis("move_left", "move_right")
 	
 	if direction:
