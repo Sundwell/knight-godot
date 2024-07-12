@@ -1,5 +1,6 @@
-extends Node
 class_name StateMachine
+
+extends Node
 
 var states : Dictionary = {}
 var current_state : State
@@ -23,7 +24,7 @@ func _physics_process(delta):
 	if current_state:
 		current_state.physics_process(delta)
 
-func change_state(source_state : State, new_state_name : String):
+func change_state(source_state: State, new_state_name: String):
 	if source_state != current_state:
 		return
 		
@@ -34,6 +35,18 @@ func change_state(source_state : State, new_state_name : String):
 	if current_state:
 		current_state.exit()
 	
+	new_state.enter()
+	
+	current_state = new_state
+	
+func force_change_state(new_state_name: String):
+	var new_state = states.get(new_state_name.to_lower())
+	if not new_state and new_state != current_state:
+		return
+		
+	if current_state:
+		current_state.exit()
+		
 	new_state.enter()
 	
 	current_state = new_state

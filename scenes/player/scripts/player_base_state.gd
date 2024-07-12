@@ -1,5 +1,6 @@
-extends State
 class_name PlayerBaseState
+
+extends State
 
 @export var speed = 130.0
 @export var jump_velocity = -300.0

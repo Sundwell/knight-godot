@@ -11,7 +11,7 @@ func enter():
 	roll_direction = -1 if animated_sprite.flip_h else 1
 	animated_sprite.play('roll')
 
-func physics_process(delta):
+func physics_process(_delta):
 	player.velocity.x = roll_direction * roll_velocity
 	
 	if Input.is_action_just_pressed("jump"):

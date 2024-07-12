@@ -1,5 +1,6 @@
-extends Node
 class_name State
+
+extends Node
 
 signal state_transition
 
@@ -9,8 +10,8 @@ func enter():
 func exit():
 	pass
 	
-func process(delta: float):
+func process(_delta: float):
 	pass
 	
-func physics_process(delta: float):
+func physics_process(_delta: float):
 	pass

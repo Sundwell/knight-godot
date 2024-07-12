@@ -1,17 +1,32 @@
-extends CharacterBody2D
 class_name Player
+
+extends CharacterBody2D
+
+const MAX_HEALTH: float = 100.0
 
 @export var jump_velocity = -300.0
 @export var double_jump_velocity = -200.0
 
-@onready var jump_sound = $JumpSound
+@onready var jump_sound = $SFX/JumpSound
+@onready var hurt_sound = $SFX/HurtSound
 @onready var animated_sprite = $AnimatedSprite2D
+@onready var state_machine: StateMachine = $PlayerStateMachine
+@onready var health_bar = $HealthBar
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
-var can_double_jump : bool = true
-var can_roll : bool = true
+var can_double_jump: bool = true
+var can_roll: bool = true
+var is_dead: bool = false
+var invincible: bool = false
+var health: float = MAX_HEALTH:
+	set(new_health):
+		health = min(MAX_HEALTH, new_health)
+		health_bar.health = health
 
-func _process(delta):
+func _ready():
+	health_bar.init_health(health)
+
+func _process(_delta):
 	update_facing()
 
 func _physics_process(delta):
@@ -45,3 +60,22 @@ func reset_double_jump():
 	
 func reset_roll():
 	can_roll = true
+	
+func take_damage(damage: float):
+	if is_dead or invincible:
+		return
+		
+	invincible = true
+	hurt_sound.play()
+	health -= damage
+	modulate.a = 0.5
+	if health == 0:
+		die()
+	else:
+		await get_tree().create_timer(0.6).timeout
+		modulate.a = 1
+		invincible = false
+	
+func die():
+	is_dead = true
+	state_machine.force_change_state('Dying')

@@ -2,13 +2,17 @@ extends Node2D
 
 const SPEED = 60
 
-var direction = 1
-
 @onready var animated_sprite_2d = $AnimatedSprite2D
 @onready var ray_cast_right = $RayCastRight
 @onready var ray_cast_left = $RayCastLeft
+@onready var damage_zone = $DamageZone
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+var direction = 1
+@export var damage: float = 5.0
+
+func _ready():
+	damage_zone.init_damage(damage)
+
 func _process(delta):
 	if ray_cast_left.is_colliding():
 		direction = 1
