@@ -68,12 +68,13 @@ func take_damage(damage: float):
 	invincible = true
 	hurt_sound.play()
 	health -= damage
-	modulate.a = 0.5
+	animated_sprite.modulate.a = 0.5
 	if health == 0:
+		animated_sprite.modulate.a = 1
 		die()
 	else:
 		await get_tree().create_timer(0.6).timeout
-		modulate.a = 1
+		animated_sprite.modulate.a = 1
 		invincible = false
 	
 func die():
