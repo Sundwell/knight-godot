@@ -8,7 +8,7 @@ const SPEED = 60
 @onready var damage_zone = $DamageZone
 
 var direction = 1
-@export var damage: float = 5.0
+@export var damage: float = 25.0
 
 func _ready():
 	damage_zone.init_damage(damage)
