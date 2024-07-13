@@ -69,6 +69,8 @@ func take_damage(damage: float):
 	hurt_sound.play()
 	health -= damage
 	animated_sprite.modulate.a = 0.5
+	set_collision_layer_value(2, false)
+	
 	if health == 0:
 		animated_sprite.modulate.a = 1
 		die()
@@ -76,6 +78,7 @@ func take_damage(damage: float):
 		await get_tree().create_timer(0.6).timeout
 		animated_sprite.modulate.a = 1
 		invincible = false
+		set_collision_layer_value(2, true)
 	
 func die():
 	is_dead = true

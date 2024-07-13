@@ -4,6 +4,7 @@ extends PlayerBaseState
 
 func enter():
 	super()
+	player.velocity = Vector2.ZERO
 	Engine.time_scale = 0.5
 	animated_sprite.play('die')
 
