@@ -22,6 +22,7 @@ var health: float = MAX_HEALTH:
 	set(new_health):
 		health = min(MAX_HEALTH, new_health)
 		health_bar.health = health
+var damage: float = 1.0
 
 func _ready():
 	health_bar.init_health(health)
@@ -83,3 +84,14 @@ func take_damage(damage: float):
 func die():
 	is_dead = true
 	state_machine.force_change_state('Dying')
+	
+
+func _on_jump_damage_area_entered(area):
+	if velocity.y <= 0:
+		return
+	
+	var enemy = area.get_parent()
+	if enemy:
+		enemy.take_damage(damage)
+	
+	jump()

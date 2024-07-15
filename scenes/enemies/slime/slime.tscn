@@ -1,8 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://xlbaquyeba6q"]
+[gd_scene load_steps=13 format=3 uid="uid://xlbaquyeba6q"]
 
-[ext_resource type="Script" path="res://scripts/slime.gd" id="1_8ppc3"]
+[ext_resource type="Script" path="res://scenes/enemies/slime/scripts/slime.gd" id="1_8ppc3"]
 [ext_resource type="Texture2D" uid="uid://k4bvwqfs3p0m" path="res://assets/sprites/slime_green.png" id="1_64j7k"]
+[ext_resource type="PackedScene" uid="uid://waxbmutk2wdy" path="res://scenes/health_bar.tscn" id="3_bysqa"]
 [ext_resource type="PackedScene" uid="uid://cvc5pvjx0xp8q" path="res://scenes/damage_zone.tscn" id="3_vf3v2"]
+[ext_resource type="Script" path="res://scenes/enemies/slime/scripts/state_machine.gd" id="5_e4y7g"]
+[ext_resource type="Script" path="res://scenes/enemies/slime/scripts/patrolling_state.gd" id="6_dt70r"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uiw15"]
 atlas = ExtResource("1_64j7k")
@@ -43,7 +46,7 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_lxuyo"]
 radius = 6.0
 
-[node name="Slime" type="Node2D"]
+[node name="Slime" type="Node2D" groups=["Enemy"]]
 script = ExtResource("1_8ppc3")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -58,8 +61,30 @@ target_position = Vector2(8, 0)
 position = Vector2(0, 6)
 target_position = Vector2(-8, 0)
 
+[node name="HealthBar" parent="." instance=ExtResource("3_bysqa")]
+anchors_preset = 0
+offset_left = -8.0
+offset_top = -3.0
+offset_right = 56.0
+offset_bottom = 5.0
+grow_horizontal = 1
+grow_vertical = 1
+
 [node name="DamageZone" parent="." instance=ExtResource("3_vf3v2")]
+collision_layer = 4
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DamageZone"]
 position = Vector2(0, 6)
 shape = SubResource("CircleShape2D_lxuyo")
+
+[node name="SlimeStateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("5_e4y7g")
+initial_state = NodePath("Patrolling")
+
+[node name="Patrolling" type="Node" parent="SlimeStateMachine"]
+script = ExtResource("6_dt70r")
+
+[node name="Dying" type="Node" parent="SlimeStateMachine"]
+
+[node name="Stunned" type="Node" parent="SlimeStateMachine"]

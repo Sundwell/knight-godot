@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://dme6wxg32q4h5"]
+[gd_scene load_steps=47 format=3 uid="uid://dme6wxg32q4h5"]
 
 [ext_resource type="Script" path="res://scenes/player/scripts/player.gd" id="1_0fi3h"]
 [ext_resource type="Texture2D" uid="uid://drkxyunmbau3f" path="res://assets/sprites/knight.png" id="1_yir83"]
@@ -267,8 +267,12 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_v2tvy"]
 radius = 5.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nyeyp"]
+size = Vector2(11, 1)
+
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 collision_layer = 2
+collision_mask = 5
 script = ExtResource("1_0fi3h")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -321,5 +325,14 @@ offset_bottom = -2.0
 grow_horizontal = 1
 grow_vertical = 1
 
+[node name="JumpDamage" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="JumpDamage"]
+position = Vector2(-0.5, 12.5)
+shape = SubResource("RectangleShape2D_nyeyp")
+
 [connection signal="animation_finished" from="AnimatedSprite2D" to="PlayerStateMachine/Rolling" method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="PlayerStateMachine/Dying" method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="area_entered" from="JumpDamage" to="." method="_on_jump_damage_area_entered"]
