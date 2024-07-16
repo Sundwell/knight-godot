@@ -197,8 +197,9 @@ _data = {
 "pickup": SubResource("Animation_yimwf")
 }
 
-[node name="Coin" type="Area2D"]
-collision_mask = 2
+[node name="Coin" type="Area2D" groups=["Coin"]]
+collision_layer = 8
+collision_mask = 0
 script = ExtResource("1_kqdgh")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -217,5 +218,3 @@ root_node = NodePath("../PickupSound")
 libraries = {
 "": SubResource("AnimationLibrary_f8rjw")
 }
-
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -12,6 +12,7 @@ const MAX_HEALTH: float = 100.0
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var state_machine: StateMachine = $PlayerStateMachine
 @onready var health_bar = $HealthBar
+@onready var hurtbox_collision = $Hurtbox/CollisionShape2D
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var can_double_jump: bool = true
@@ -22,7 +23,7 @@ var health: float = MAX_HEALTH:
 	set(new_health):
 		health = min(MAX_HEALTH, new_health)
 		health_bar.health = health
-var damage: float = 1.0
+var damage: float = 0.1
 
 func _ready():
 	health_bar.init_health(health)
@@ -62,15 +63,15 @@ func reset_double_jump():
 func reset_roll():
 	can_roll = true
 	
-func take_damage(damage: float):
+func take_damage(_damage: float):
 	if is_dead or invincible:
 		return
 		
 	invincible = true
 	hurt_sound.play()
-	health -= damage
+	health -= _damage
 	animated_sprite.modulate.a = 0.5
-	set_collision_layer_value(2, false)
+	hurtbox_collision.set_deferred('disabled', true)
 	
 	if health == 0:
 		animated_sprite.modulate.a = 1
@@ -79,14 +80,16 @@ func take_damage(damage: float):
 		await get_tree().create_timer(0.6).timeout
 		animated_sprite.modulate.a = 1
 		invincible = false
-		set_collision_layer_value(2, true)
+		hurtbox_collision.set_deferred('disabled', false)
 	
 func die():
 	is_dead = true
 	state_machine.force_change_state('Dying')
 	
-
-func _on_jump_damage_area_entered(area):
+func _on_jump_hitbox_area_entered(area):
+	if not area.is_in_group('Enemy Hurtbox'):
+		return
+		
 	if velocity.y <= 0:
 		return
 	
@@ -95,3 +98,8 @@ func _on_jump_damage_area_entered(area):
 		enemy.take_damage(damage)
 	
 	jump()
+	
+
+func _on_pickup_detector_area_entered(area):
+	if area.is_in_group('Coin'):
+		area.pickup()

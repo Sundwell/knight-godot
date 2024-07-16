@@ -1,9 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://cvc5pvjx0xp8q"]
-
-[ext_resource type="Script" path="res://damage_zone.gd" id="1_fnnjs"]
-
-[node name="DamageZone" type="Area2D"]
-collision_mask = 2
-script = ExtResource("1_fnnjs")
-
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://dme6wxg32q4h5"]
+[gd_scene load_steps=49 format=3 uid="uid://dme6wxg32q4h5"]
 
 [ext_resource type="Script" path="res://scenes/player/scripts/player.gd" id="1_0fi3h"]
 [ext_resource type="Texture2D" uid="uid://drkxyunmbau3f" path="res://assets/sprites/knight.png" id="1_yir83"]
@@ -270,9 +270,15 @@ radius = 5.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nyeyp"]
 size = Vector2(11, 1)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_2tbiv"]
+radius = 5.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mm7ae"]
+size = Vector2(11, 18.5)
+
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
-collision_layer = 2
-collision_mask = 5
+collision_layer = 0
+collision_mask = 2
 script = ExtResource("1_0fi3h")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -324,15 +330,32 @@ offset_right = 56.0
 offset_bottom = -2.0
 grow_horizontal = 1
 grow_vertical = 1
+metadata/_edit_use_anchors_ = true
 
-[node name="JumpDamage" type="Area2D" parent="."]
+[node name="JumpHitbox" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="JumpDamage"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="JumpHitbox"]
 position = Vector2(-0.5, 12.5)
 shape = SubResource("RectangleShape2D_nyeyp")
 
+[node name="Hurtbox" type="Area2D" parent="." groups=["Player Hurtbox"]]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, 7)
+shape = SubResource("CircleShape2D_2tbiv")
+
+[node name="PickupDetector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupDetector"]
+position = Vector2(-0.5, 2.25)
+shape = SubResource("RectangleShape2D_mm7ae")
+
 [connection signal="animation_finished" from="AnimatedSprite2D" to="PlayerStateMachine/Rolling" method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="animation_finished" from="AnimatedSprite2D" to="PlayerStateMachine/Dying" method="_on_animated_sprite_2d_animation_finished"]
-[connection signal="area_entered" from="JumpDamage" to="." method="_on_jump_damage_area_entered"]
+[connection signal="area_entered" from="JumpHitbox" to="." method="_on_jump_hitbox_area_entered"]
+[connection signal="area_entered" from="PickupDetector" to="." method="_on_pickup_detector_area_entered"]

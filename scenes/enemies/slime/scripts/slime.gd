@@ -7,8 +7,10 @@ const SPEED = 60
 @onready var animated_sprite_2d = $AnimatedSprite2D
 @onready var ray_cast_right = $RayCastRight
 @onready var ray_cast_left = $RayCastLeft
-@onready var damage_zone = $DamageZone
+@onready var hitbox = $Hitbox
 @onready var health_bar = $HealthBar
+@onready var state_machine = $SlimeStateMachine
+@onready var hurt_sound = $HurtSound
 
 var direction = 1
 @export var max_health: float = 2.0
@@ -20,7 +22,6 @@ var direction = 1
 
 func _ready():
 	health_bar.init_health(health)
-	damage_zone.init_damage(damage)
 	
 func move(delta: float):
 	if ray_cast_left.is_colliding():
@@ -32,11 +33,19 @@ func move(delta: float):
 	
 	position.x += direction * SPEED * delta
 	
-func take_damage(damage: float):
-	health -= damage
+func take_damage(_damage: float):
+	health -= _damage
+	hurt_sound.play()
 	
 	if health == 0:
-		die()
+		state_machine.force_change_state('Dying')
+	else:
+		state_machine.force_change_state('Stunned')
 		
 func die():
 	queue_free()
+
+func _on_hitbox_area_entered(area):
+	if area.is_in_group('Player Hurtbox'):
+		var player: Player = area.get_parent()
+		player.take_damage(damage)
