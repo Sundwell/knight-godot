@@ -13,7 +13,7 @@ const SPEED = 60
 @onready var hurt_sound = $HurtSound
 
 var direction = 1
-@export var max_health: float = 2.0
+@export var max_health: float = 5.0
 @export var health: float = max_health:
 	set(new_health):
 		health = min(max_health, new_health)
