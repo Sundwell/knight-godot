@@ -7,13 +7,15 @@ const SPEED = 60
 @onready var animated_sprite_2d = $AnimatedSprite2D
 @onready var ray_cast_right = $RayCastRight
 @onready var ray_cast_left = $RayCastLeft
-@onready var hitbox = $Hitbox
+@onready var hitbox_collision: CollisionShape2D = $Hitbox/CollisionShape2D
+@onready var hurtbox_collision: CollisionShape2D = $Hurtbox/CollisionShape2D
 @onready var health_bar = $HealthBar
 @onready var state_machine = $SlimeStateMachine
 @onready var hurt_sound = $HurtSound
 
+var floating_points_scene = preload('res://scenes/floating_points.tscn')
 var direction = 1
-@export var max_health: float = 5.0
+@export var max_health: float = 15.0
 @export var health: float = max_health:
 	set(new_health):
 		health = min(max_health, new_health)
@@ -34,10 +36,17 @@ func move(delta: float):
 	position.x += direction * SPEED * delta
 	
 func take_damage(_damage: float):
+	hitbox_collision.disabled = true
 	health -= _damage
+	
+	var floating_points = floating_points_scene.instantiate()
+	floating_points.points = _damage
+	floating_points.type = floating_points.TYPES.DAMAGE
+	add_child(floating_points)
+	
 	hurt_sound.play()
 	
-	if health == 0:
+	if health <= 0:
 		state_machine.force_change_state('Dying')
 	else:
 		state_machine.force_change_state('Stunned')
@@ -46,6 +55,6 @@ func die():
 	queue_free()
 
 func _on_hitbox_area_entered(area):
-	if area.is_in_group('Player Hurtbox'):
+	if area.is_in_group('Player Hurtbox') and not hitbox_collision.disabled:
 		var player: Player = area.get_parent()
 		player.take_damage(damage)

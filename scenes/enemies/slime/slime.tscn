@@ -133,11 +133,13 @@ animation = &"idle"
 autoplay = "idle"
 
 [node name="RayCastRight" type="RayCast2D" parent="."]
+visible = false
 position = Vector2(0, 6)
 target_position = Vector2(8, 0)
 collision_mask = 2
 
 [node name="RayCastLeft" type="RayCast2D" parent="."]
+visible = false
 position = Vector2(0, 6)
 target_position = Vector2(-8, 0)
 collision_mask = 2
@@ -173,14 +175,14 @@ slime = NodePath("../..")
 [node name="HurtSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("8_ygawp")
 
-[node name="Hitbox" type="Area2D" parent="." groups=["Enemy Hurtbox"]]
+[node name="Hitbox" type="Area2D" parent="."]
 collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 position = Vector2(0, 6)
 shape = SubResource("CircleShape2D_hvvck")
 
-[node name="Hurtbox" type="Area2D" parent="."]
+[node name="Hurtbox" type="Area2D" parent="." groups=["Enemy Hurtbox"]]
 collision_layer = 4
 collision_mask = 0
 

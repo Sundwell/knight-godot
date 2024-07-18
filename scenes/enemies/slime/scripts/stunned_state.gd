@@ -8,3 +8,6 @@ func enter():
 func _on_animated_sprite_2d_animation_finished():
 	if animated_sprite.animation == 'stun':
 		state_transition.emit(self, 'Patrolling')
+
+func exit():
+	slime.hitbox_collision.set_deferred('disabled', false)
