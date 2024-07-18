@@ -356,7 +356,7 @@ collision_mask = 4
 priority = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="JumpHitbox"]
-position = Vector2(-1, 14)
+position = Vector2(-1, 12)
 shape = SubResource("RectangleShape2D_5ddb4")
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="PlayerStateMachine/Rolling" method="_on_animated_sprite_2d_animation_finished"]
