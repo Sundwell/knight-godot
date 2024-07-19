@@ -95,7 +95,14 @@ func die():
 	state_machine.force_change_state('Dying')	
 
 func _on_pickup_detector_area_entered(area):
-	if area.is_in_group('Coin'):
+	if area.is_in_group('Pickup'):
+		if area.is_in_group('Fruit'):
+			var floating_points: FloatingPoints = floating_point_scene.instantiate()
+			floating_points.points = area.heal
+			floating_points.type = floating_points.TYPES.HEAL
+			add_child(floating_points)
+			health += area.heal
+		
 		area.pickup()
 		
 

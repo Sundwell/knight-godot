@@ -1,4 +1,4 @@
-extends Area2D
+extends Pickup
 
 @onready var game_manager = %GameManager
 @onready var animation_player = $AnimationPlayer

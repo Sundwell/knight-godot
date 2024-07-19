@@ -197,7 +197,7 @@ _data = {
 "pickup": SubResource("Animation_yimwf")
 }
 
-[node name="Coin" type="Area2D" groups=["Coin"]]
+[node name="Coin" type="Area2D" groups=["Coin", "Pickup"]]
 collision_layer = 8
 collision_mask = 0
 script = ExtResource("1_kqdgh")

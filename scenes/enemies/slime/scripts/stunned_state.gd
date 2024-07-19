@@ -11,3 +11,4 @@ func _on_animated_sprite_2d_animation_finished():
 
 func exit():
 	slime.hitbox_collision.set_deferred('disabled', false)
+	slime.can_attack = true

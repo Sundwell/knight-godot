@@ -15,6 +15,7 @@ const SPEED = 60
 
 var floating_points_scene = preload('res://scenes/floating_points.tscn')
 var direction = 1
+var can_attack := true
 @export var max_health: float = 15.0
 @export var health: float = max_health:
 	set(new_health):
@@ -36,7 +37,8 @@ func move(delta: float):
 	position.x += direction * SPEED * delta
 	
 func take_damage(_damage: float):
-	hitbox_collision.disabled = true
+	can_attack = false
+	hitbox_collision.set_deferred('disabled', true)
 	health -= _damage
 	
 	var floating_points = floating_points_scene.instantiate()
@@ -55,6 +57,6 @@ func die():
 	queue_free()
 
 func _on_hitbox_area_entered(area):
-	if area.is_in_group('Player Hurtbox') and not hitbox_collision.disabled:
+	if area.is_in_group('Player Hurtbox') and can_attack:
 		var player: Player = area.get_parent()
 		player.take_damage(damage)

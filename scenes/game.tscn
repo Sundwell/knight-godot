@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cyucs2tfds4kx"]
+[gd_scene load_steps=16 format=3 uid="uid://cyucs2tfds4kx"]
 
 [ext_resource type="PackedScene" uid="uid://dme6wxg32q4h5" path="res://scenes/player/player.tscn" id="1_hm1hn"]
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_p3tcs"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cymo061mdgj64" path="res://scenes/killzone.tscn" id="5_vrpf5"]
 [ext_resource type="PackedScene" uid="uid://xlbaquyeba6q" path="res://scenes/enemies/slime/slime.tscn" id="6_marl3"]
 [ext_resource type="FontFile" uid="uid://csmsvxau7iwr0" path="res://assets/fonts/PixelOperator8.ttf" id="7_g014m"]
+[ext_resource type="PackedScene" uid="uid://osg0vn81vegn" path="res://scenes/fruit.tscn" id="9_8fx0i"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hctpj"]
 texture = ExtResource("2_gwss8")
@@ -519,9 +520,13 @@ position = Vector2(12, -133)
 
 [node name="Platform" parent="Platforms" instance=ExtResource("3_yolss")]
 position = Vector2(75, -48)
+collision_layer = 2
+collision_mask = 0
 
 [node name="Platform2" parent="Platforms" instance=ExtResource("3_yolss")]
 position = Vector2(257, -12)
+collision_layer = 2
+collision_mask = 0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Platforms/Platform2"]
 libraries = {
@@ -565,3 +570,12 @@ theme_override_font_sizes/font_size = 8
 text = "Collect them all!"
 autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
+
+[node name="Fruits" type="Node" parent="."]
+
+[node name="Fruit" parent="Fruits" instance=ExtResource("9_8fx0i")]
+position = Vector2(122, -24)
+
+[node name="Fruit2" parent="Fruits" instance=ExtResource("9_8fx0i")]
+position = Vector2(185, -64)
+type = 1
