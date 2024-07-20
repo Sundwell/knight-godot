@@ -7,8 +7,8 @@ const SPEED = 60
 @onready var animated_sprite_2d = $AnimatedSprite2D
 @onready var ray_cast_right = $RayCastRight
 @onready var ray_cast_left = $RayCastLeft
-@onready var hitbox_collision: CollisionShape2D = $Hitbox/CollisionShape2D
-@onready var hurtbox_collision: CollisionShape2D = $Hurtbox/CollisionShape2D
+@onready var hitbox: Area2D = $Hitbox
+@onready var hurtbox: Area2D = $Hurtbox
 @onready var health_bar = $HealthBar
 @onready var state_machine = $SlimeStateMachine
 @onready var hurt_sound = $HurtSound
@@ -39,7 +39,7 @@ func move(delta: float):
 	
 func take_damage(_damage: float):
 	can_attack = false
-	hitbox_collision.set_deferred('disabled', true)
+	hitbox.set_collision_mask_value(1, false)
 	health -= _damage
 	
 	var floating_points = floating_points_scene.instantiate()

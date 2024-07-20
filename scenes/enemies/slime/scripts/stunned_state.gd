@@ -10,5 +10,5 @@ func _on_animated_sprite_2d_animation_finished():
 		state_transition.emit(self, 'Patrolling')
 
 func exit():
-	slime.hitbox_collision.set_deferred('disabled', false)
+	slime.hitbox.set_collision_mask_value(1, true)
 	slime.can_attack = true
