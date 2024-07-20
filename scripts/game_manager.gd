@@ -1,6 +1,6 @@
 extends Node
 
-@onready var score = $Score
+@onready var score = $Label
 
 var points = 0
 

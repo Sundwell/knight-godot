@@ -1,8 +1,9 @@
+class_name Coin
+
 extends Pickup
 
-@onready var game_manager = %GameManager
 @onready var animation_player = $AnimationPlayer
 
 func pickup():
-	game_manager.add_point()
+	#GameManager.add_point()
 	animation_player.play('pickup')

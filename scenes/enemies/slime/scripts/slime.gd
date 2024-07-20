@@ -14,9 +14,10 @@ const SPEED = 60
 @onready var hurt_sound = $HurtSound
 
 var floating_points_scene = preload('res://scenes/floating_points.tscn')
+var enemy_drop_scene = preload("res://scenes/enemy_drop.tscn")
 var direction = 1
 var can_attack := true
-@export var max_health: float = 15.0
+@export var max_health: float = 3.0
 @export var health: float = max_health:
 	set(new_health):
 		health = min(max_health, new_health)
@@ -54,6 +55,9 @@ func take_damage(_damage: float):
 		state_machine.force_change_state('Stunned')
 		
 func die():
+	var enemy_drop = enemy_drop_scene.instantiate()
+	enemy_drop.position = position
+	get_parent().add_child.call_deferred(enemy_drop)
 	queue_free()
 
 func _on_hitbox_area_entered(area):

@@ -3,7 +3,7 @@ class_name FloatingPoints
 extends Node2D
 
 const DAMAGE_COLOR = '#ff4232'
-const HEAL_COLOR = '#2caf1d'
+const HEAL_COLOR = '#00e982'
 
 enum TYPES {
 	DAMAGE,
@@ -25,7 +25,13 @@ var points_color:
 
 func _ready():
 	var tween: Tween = create_tween()
-	$Label.text = str(points)
+	
+	var text = str(points)
+	
+	if type == TYPES.HEAL:
+		text = '+' + text
+
+	$Label.text = text
 	$Label.add_theme_color_override("font_color", points_color)
 	
 	var offset_x = randi() % 6
