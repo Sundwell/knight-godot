@@ -1,7 +1,7 @@
 [gd_scene load_steps=16 format=3 uid="uid://cyucs2tfds4kx"]
 
 [ext_resource type="PackedScene" uid="uid://dme6wxg32q4h5" path="res://scenes/player/player.tscn" id="1_hm1hn"]
-[ext_resource type="PackedScene" uid="uid://c7g1rs1xe4o16" path="res://scenes/game_manager.tscn" id="1_kvb75"]
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_yjuyi"]
 [ext_resource type="Texture2D" uid="uid://cskuwulae0y2e" path="res://assets/sprites/world_tileset.png" id="2_gwss8"]
 [ext_resource type="PackedScene" uid="uid://b2ur3e3imtyjr" path="res://scenes/platform.tscn" id="3_yolss"]
 [ext_resource type="PackedScene" uid="uid://dotwkys51pq52" path="res://scenes/coin.tscn" id="4_3lx7g"]
@@ -455,9 +455,6 @@ _data = {
 
 [node name="Game" type="Node2D"]
 
-[node name="GameManager" parent="." instance=ExtResource("1_kvb75")]
-unique_name_in_owner = true
-
 [node name="Player" parent="." instance=ExtResource("1_hm1hn")]
 z_index = 5
 position = Vector2(-37, -164)
@@ -480,6 +477,8 @@ layer_2/tile_data = PackedInt32Array(-3, 0, 1, -2, 0, 1, -1, 0, 1, -65536, 0, 0,
 
 [node name="Killzone" parent="." instance=ExtResource("5_vrpf5")]
 position = Vector2(93, 33)
+collision_layer = 0
+collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
 shape = SubResource("WorldBoundaryShape2D_qjrgq")
@@ -573,3 +572,19 @@ position = Vector2(-94, -141)
 
 [node name="Slime3" parent="." instance=ExtResource("6_marl3")]
 position = Vector2(-212, -140)
+
+[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("score") groups=["GameManager"]]
+unique_name_in_owner = true
+script = ExtResource("1_yjuyi")
+score = NodePath("Score2")
+
+[node name="Score2" type="Label" parent="GameManager"]
+offset_left = 331.0
+offset_top = -93.0
+offset_right = 437.0
+offset_bottom = -63.0
+theme_override_fonts/font = ExtResource("7_g014m")
+theme_override_font_sizes/font_size = 8
+text = "You've collected X coins"
+horizontal_alignment = 1
+autowrap_mode = 2

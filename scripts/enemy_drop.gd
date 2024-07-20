@@ -21,4 +21,4 @@ func _ready():
 			
 	if drop_scene:
 		var drop: Pickup = drop_scene.instantiate()
-		add_child.call_deferred(drop)
+		add_child(drop)

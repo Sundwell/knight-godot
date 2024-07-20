@@ -1,6 +1,8 @@
+class_name GameManager
+
 extends Node
 
-@onready var score = $Label
+@export var score: Label 
 
 var points = 0
 
