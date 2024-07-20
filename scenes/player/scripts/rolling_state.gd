@@ -8,6 +8,7 @@ func enter():
 	super()
 	player.can_roll = false
 	player.velocity.y = 0
+	player.invincible = true
 	roll_direction = -1 if animated_sprite.flip_h else 1
 	animated_sprite.play('roll')
 
@@ -29,3 +30,6 @@ func _on_animated_sprite_2d_animation_finished():
 			state_transition.emit(self, 'Idle')
 		else:
 			state_transition.emit(self, 'Air')
+			
+func exit():
+	player.invincible = false
