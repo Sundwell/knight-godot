@@ -21,4 +21,8 @@ func _ready():
 			
 	if drop_scene:
 		var drop: Pickup = drop_scene.instantiate()
+		
+		if drop is Fruit:
+			drop.is_random_fruit = true
+		
 		add_child(drop)

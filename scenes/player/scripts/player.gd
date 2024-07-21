@@ -12,14 +12,18 @@ const MAX_HEALTH: float = 100.0
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var state_machine: StateMachine = $PlayerStateMachine
 @onready var health_bar = $HealthBar
-@onready var hurtbox_collision = $Hurtbox/CollisionShape2D
+@onready var hurtbox: Area2D = $Hurtbox
 
 var floating_point_scene = preload('res://scenes/floating_points.tscn')
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var can_double_jump: bool = true
 var can_roll: bool = true
 var is_dead: bool = false
-var invincible: bool = false
+var invincible: bool = false:
+	set(is_invincible):
+		invincible = is_invincible
+		hurtbox.set_collision_layer_value(1, !invincible)
+		
 var health: float = MAX_HEALTH:
 	set(new_health):
 		health = min(MAX_HEALTH, new_health)
@@ -79,7 +83,6 @@ func take_damage(_damage: float):
 	add_child(floating_points)
 	
 	animated_sprite.modulate.a = 0.5
-	hurtbox_collision.set_deferred('disabled', true)
 	
 	if health <= 0:
 		animated_sprite.modulate.a = 1
@@ -88,7 +91,6 @@ func take_damage(_damage: float):
 		await get_tree().create_timer(0.6).timeout
 		animated_sprite.modulate.a = 1
 		invincible = false
-		hurtbox_collision.set_deferred('disabled', false)
 	
 func die():
 	is_dead = true
@@ -102,6 +104,11 @@ func _on_pickup_detector_area_entered(area):
 			floating_points.type = floating_points.TYPES.HEAL
 			add_child(floating_points)
 			health += area.heal
+		if area.is_in_group('Coin'):
+			var floating_points: FloatingPoints = floating_point_scene.instantiate()
+			floating_points.points = 1
+			floating_points.type = floating_points.TYPES.COIN
+			add_child(floating_points)
 		
 		area.pickup()
 		

@@ -4,10 +4,12 @@ extends Node2D
 
 const DAMAGE_COLOR = '#ff4232'
 const HEAL_COLOR = '#00e982'
+const COIN_COLOR = '#ffff35'
 
 enum TYPES {
 	DAMAGE,
-	HEAL
+	HEAL,
+	COIN
 }
 var type: TYPES
 var points: float
@@ -18,6 +20,8 @@ var points_color:
 				return DAMAGE_COLOR
 			TYPES.HEAL:
 				return HEAL_COLOR
+			TYPES.COIN:
+				return COIN_COLOR
 			_:
 				return '#ffffff'
 
@@ -28,7 +32,7 @@ func _ready():
 	
 	var text = str(points)
 	
-	if type == TYPES.HEAL:
+	if type in [TYPES.HEAL, TYPES.COIN]:
 		text = '+' + text
 
 	$Label.text = text
