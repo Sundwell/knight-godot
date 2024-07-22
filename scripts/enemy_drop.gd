@@ -5,13 +5,15 @@ extends Node2D
 var coin_scene = preload("res://scenes/coin.tscn")
 var fruit_scene = preload("res://scenes/fruit.tscn")
 enum TYPES { COIN, FRUIT }
+var type: TYPES
+var randomize_drop: bool = true
 
 func _ready():
 	var drop_scene
 	
-	var enum_values = TYPES.values()
-	
-	var type: TYPES = enum_values[randi() % enum_values.size()]
+	if randomize_drop:
+		var enum_values = TYPES.values()
+		type = enum_values[randi() % enum_values.size()]
 	
 	match type:
 		TYPES.COIN:

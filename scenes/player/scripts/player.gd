@@ -79,7 +79,7 @@ func take_damage(_damage: float):
 	
 	var floating_points: FloatingPoints = floating_point_scene.instantiate()
 	floating_points.points = _damage
-	floating_points.type = floating_points.TYPES.DAMAGE
+	floating_points.type = floating_points.TYPES.DAMAGE if _damage <= 25 else floating_points.TYPES.CRITICAL_DAMAGE
 	add_child(floating_points)
 	
 	animated_sprite.modulate.a = 0.5
