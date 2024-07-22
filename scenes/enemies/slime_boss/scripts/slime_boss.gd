@@ -75,16 +75,21 @@ func take_damage(_damage: float):
 	if health <= 0:
 		state_machine.force_change_state('Dying')
 		return
-		
+	
 	await get_tree().create_timer(0.1).timeout
 	can_attack = true
 	hitbox.set_collision_mask_value(1, true)
 		
 func die():
-	var enemy_drop: EnemyDrop = enemy_drop_scene.instantiate()
-	enemy_drop.position = position
-	enemy_drop.randomize_drop = false
-	get_tree().current_scene.add_child(enemy_drop)
+	for index in 10:
+		var enemy_drop: EnemyDrop = enemy_drop_scene.instantiate()
+		enemy_drop.position = Vector2(
+			randf_range(position.x - 10, position.x + 10), 
+			randf_range(position.y - 20, position.y + 20)
+			)
+		enemy_drop.randomize_drop = false
+		get_tree().current_scene.add_child(enemy_drop)
+
 	queue_free()
 
 func _on_hitbox_area_entered(area):

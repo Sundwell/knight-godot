@@ -9,7 +9,7 @@ func enter():
 	slime.velocity.x = 0
 	animated_sprite.play('jump_preparation')
 	
-func physics_process(delta):
+func physics_process(_delta):
 	if slime.is_on_floor() and has_attacked:
 		state_transition.emit(self, 'Wandering')
 
